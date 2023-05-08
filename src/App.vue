@@ -8,7 +8,7 @@ var requestOptions = {
   redirect: 'follow'
 };
 
-fetch("http://localhost:8080/api/v1/demo", requestOptions)
+fetch("/dapi/v1/demo", requestOptions)
   .then(response => response.text())
   .then(result => console.log(result))
   .catch(error => console.log('error', error));
@@ -17,7 +17,7 @@ fetch("http://localhost:8080/api/v1/demo", requestOptions)
 </script>
 
 <template>
- <a href="http://localhost:8080/oauth2/authorization/github">tu</a>
+ tak
 </template>
 
 <style scoped>
