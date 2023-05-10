@@ -1,25 +1,31 @@
 <script setup>
-var myHeaders = new Headers();
-myHeaders.append("Accept", "*/*");
 
-var requestOptions = {
-  method: 'GET',
-  headers: myHeaders,
-  redirect: 'follow'
-};
-
-fetch("/dapi/v1/demo", requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
-
-  
+import SiteNavigation from "./components/SiteNavigation.vue";
 </script>
 
 <template>
- tak
+  <div class="flex flex-col min-h-screen font-Roboto bg-main-color">
+    <site-navigation/>
+    <router-view v-slot="{Component}">
+      <transition name="fade" mode="out-in">
+        <component :is="Component"/>
+      </transition>
+    </router-view>
+  </div>
 </template>
 
 <style scoped>
+
+
+
+.fade-enter-from,
+.fade-leave-to{
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active{
+  transition: opacity 0.25s ease-out;
+}
 
 </style>
