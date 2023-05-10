@@ -58,6 +58,7 @@ onKeyStroke("ArrowRight", (e) => {
 </script>
 
 <template>
+  <div>
   {{ speech.result }}
   <hr />
   <span class="pre">
@@ -69,6 +70,7 @@ onKeyStroke("ArrowRight", (e) => {
   <span class="su">
     {{ suffix+" " }}
   </span>
+  </div>
 </template>
 
 <style scoped>
