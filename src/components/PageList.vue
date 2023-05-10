@@ -9,7 +9,7 @@ const modal = ref(true);
 
 <template>
   <modal :isModalOpen="modal" @closeModal="modal=!modal">
-
+      nie wiem co tu dać
   </modal>
 </template>
 

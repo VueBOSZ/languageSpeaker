@@ -1,15 +1,17 @@
 <script setup>
 
+const props = defineProps({
+  id:{
+    type:Number,
+    default:false
+  }
+})
+
 </script>
 
 <template>
   <div>
-
-    <p>loremipsum ashkdbnjxbdnbsajsmc</p>
-
-    <h3>page</h3>
-
-    <p>loremipsum ashkdbnjxbdnbsajsmc</p>
+    {{props.id}}
   </div>
 </template>
 

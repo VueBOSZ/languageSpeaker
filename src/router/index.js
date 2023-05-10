@@ -3,7 +3,7 @@ import User from "../components/User.vue";
 import Page from "../components/Page.vue";
 import PageList from "../components/PageList.vue";
 
-const router = createRouter({
+export const router = createRouter({
 
     history: createWebHashHistory(),
     routes: [
@@ -11,10 +11,12 @@ const router = createRouter({
         {
             path: '/',
             component: User,
+            alias: '/user'
         },
         {
-            path: '/page',
+            path: '/page/:id',
             component: Page,
+            props: true
         },
         {
             path: '/page/list',
@@ -23,5 +25,3 @@ const router = createRouter({
     ]
 
 })
-
-export default router
