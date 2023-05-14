@@ -4,7 +4,7 @@ import SiteNavigation from "./components/SiteNavigation.vue";
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen font-Roboto bg-main-color">
+  <div class="flex flex-col min-h-screen font-Roboto bg-main-color2 dark:bg-main-color">
     <site-navigation/>
     <router-view v-slot="{Component}">
       <transition name="fade" mode="out-in">
@@ -15,6 +15,11 @@ import SiteNavigation from "./components/SiteNavigation.vue";
 </template>
 
 <style scoped>
+
+html.dark{
+  color-scheme: dark;
+}
+
 
 
 
