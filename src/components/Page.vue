@@ -40,8 +40,7 @@ watch(props, (p)=>{
 
 <template>
   <div>
-    <Speech />
-<!--    :content="page.content"-->
+    <Speech :content="page.content" :start-lang="page.lang"/>
   </div>
 </template>
 

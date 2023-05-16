@@ -4,10 +4,11 @@ import {
   onKeyStroke,
   useSpeechSynthesis,
 } from "@vueuse/core";
-import { ref, watch, computed } from "vue";
+import {ref, watch, computed, onMounted} from "vue";
 import Modal from "../modal.vue";
+import {languages_list} from "../../assets/languageList.js";
 
-const lang = ref("en-US");
+
 
 // const content = ref(
 //   "pain condition that is characterized by progressively worsening spontaneous regional pain without dermatomal distribution. The pain experienced is out of proportion in time and"
@@ -16,9 +17,14 @@ const lang = ref("en-US");
 const props = defineProps({
   content:{
     type:String,
-    default:false
+    default:"",
+  },
+  startLang:{
+    type:String,
+    default:"en",
   }
 })
+const lang = ref(props.startLang);
 const sap = ref(true);
 const solution = ref([]);
 const prefix = computed(() => {
@@ -45,8 +51,13 @@ const speak = useSpeechSynthesis(infix, {
   volume: 1,
 });
 
-if (speech.isSupported.value) {
-  watch(speech.result, (newResult, oldResult) => {
+
+
+const { isListening, isSupported, stop, result } = speech
+
+
+if (isSupported) {
+  watch(result, (newResult, oldResult) => {
     for (const i of newResult.toLowerCase().split(" ")) {
       if (infix.value == i) {
         solution.value.push(infix.value);
@@ -74,26 +85,30 @@ onKeyStroke("ArrowLeft", (e) => {
   speech.stop();
 });
 
-const { isListening, isSupported, stop, result } = speech
+
 </script>
 
 <template>
   <div>
-    <div class="flex">
-      <svg v-if="isListening" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3m7 9c0 3.53-2.61 6.44-6 6.93V21h-2v-3.07c-3.39-.49-6-3.4-6-6.93h2a5 5 0 0 0 5 5a5 5 0 0 0 5-5h2Z"/></svg>
-      <span>
+    <div class="flex border-b-4 border-indigo-500">
+      <svg v-if="isListening" class="dark:text-white-color" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3m7 9c0 3.53-2.61 6.44-6 6.93V21h-2v-3.07c-3.39-.49-6-3.4-6-6.93h2a5 5 0 0 0 5 5a5 5 0 0 0 5-5h2Z"/></svg>
+      <select v-model="lang" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/5 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option selected>Choose a country</option>
+        <option v-for="l in languages_list" :key="l.code" :value="l.code">{{l.name}}</option>
+      </select>
+      <span class="dark:text-white-color">
       {{ speech.result }}
       </span>
     </div>
 
-  <hr />
-  <span class="pre">
+
+  <span class="pre dark:text-white-color">
     {{ prefix+" " }}
   </span>
-  <span class="in">
+  <span class="in dark:text-main-color2 text-[#EB3B98] shadow-lg dark:shadow-main-color2 shadow-[#EB3B98] text-2xl">
     {{ infix+" " }}
   </span>
-  <span class="su">
+  <span class="su dark:text-white-color">
     {{ suffix+" " }}
   </span>
     <modal :is-modal-open="sap" @closeModal="sap = !sap">
@@ -111,9 +126,6 @@ const { isListening, isSupported, stop, result } = speech
 
 <style scoped>
 
-.in{
-  color: brown;
-}
 a{
   color: #0366d6;
 }

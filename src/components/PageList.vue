@@ -6,12 +6,10 @@ import SearchItems from "./items/SearchItems.vue";
 import PageListItems from "./items/PageListItems.vue";
 
 const modal = ref(true);
-// const search = ref("");
 const pages = ref([]);
 const path = ref("/api/page/all");
 
-// watch(search,(newSearch)=>{
-//   console.log(newSearch);
+
 const sea = (s)=> {
 
   if (s === "") {
@@ -21,8 +19,6 @@ const sea = (s)=> {
   }
 }
 
-
-// })
 
 
 </script>

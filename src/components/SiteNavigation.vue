@@ -2,13 +2,15 @@
 import Modal from "./modal.vue";
 import {ref} from "vue";
 import {useDark,useToggle} from "@vueuse/core";
+import {languages_list} from "../assets/languageList.js";
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 
 const modal = ref(false);
 const title = ref("");
-const context = ref("");
+const content = ref("");
+const lang = ref("en")
 const add = () =>{
   let myHeaders = new Headers();
   myHeaders.append("Accept", "*/*");
@@ -17,19 +19,25 @@ const add = () =>{
     method: 'POST',
     headers: myHeaders,
     redirect: 'follow',
-    body: context.value
+    body: content.value
   };
 
-  fetch("/api/page/"+ title.value , requestOptions)
+  fetch("/api/page/"+ title.value +"/"+lang.value, requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
+
+  title.value = ""
+  content.value = ""
+  lang.value = "en"
+
+  modal.value = false;
 }
 
 </script>
 
 <template>
-  <header class="sticky top-0 bg-main-color dark:bg-main-color2 shadow-lg">
+  <header class="sticky top-0 bg-main-color dark:bg-main-color2 shadow-lg z-10">
     <nav class="container flex flex-col sm:flex-row items-center gap-4 text-main-color2 dark:text-main-color py-6">
       <router-link to="/" class="group"  key="link_user">
         <div class="flex items-center gap-3 pr-2 rounded-lg hover:shadow-lg hover:shadow-main-color2 border-main-color2 dark:hover:shadow-main-color dark:border-main-color group-[.router-link-active]:border-b-4 ">
@@ -58,10 +66,20 @@ const add = () =>{
         </div>
         <div class="mb-6 w-[65vw]">
           <label class="block text-main-color dark:text-main-color2 text-sm font-bold mb-2" for="password">
-            Context
+            Content
           </label>
-          <textarea v-model="context" id="message" rows="4" class="block shadow p-2.5 w-full text-sm rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white-color focus:outline-none focus:shadow-outline" placeholder="Write your thoughts here..."></textarea>
+          <textarea v-model="content" id="message" rows="4" class="block shadow p-2.5 w-full text-sm rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white-color focus:outline-none focus:shadow-outline" placeholder="Write your thoughts here..."></textarea>
         </div>
+      <div class="mb-6 w-[65vw]">
+        <label class="block text-main-color dark:text-main-color2 text-sm font-bold mb-2" for="password">
+          Language
+        </label>
+        <select v-model="lang" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <option selected>Choose a country</option>
+          <option v-for="l in languages_list" :key="l.code" :value="l.code">{{l.name}}</option>
+        </select>
+      </div>
+
       <div class="inline-flex">
         <button @click="modal=!modal" class="bg-shades4-color hover:bg-shades5-color text-main-color2 dark:bg-shades4-color2 dark:hover:bg-shades5-color2 dark:text-main-color font-bold py-2 px-4 rounded-l">
           cancel
@@ -70,6 +88,7 @@ const add = () =>{
           add
         </button>
       </div>
+
     </modal>
   </header>
 </template>
